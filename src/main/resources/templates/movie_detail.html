@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.springframework.org/schema/data/jaxb">
+<head>
+    <meta charset="UTF-8" />
+    <title>Movie World</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+</head>
+<body>
+<div id="header" th:include="layout :: title" />
+<div id="search" th:include="search :: search" />
+<div class="container-fluid">
+<h1><span th:text="${movie.title + '(' + movie.year + ')'}" /></h1>
+    <div class="row top-buffer">
+        <div class="col-sm-2 col-md-2 col-lg-2">
+            <img th:src="${movie.thumbnail}" style="width: 100%" />
+        </div>
+        <div class="col-sm-8 col-md-8 col-lg-8">
+            <dl class="dl-horizontal">
+                <dt>평점</dt>
+                <dd>
+                    <span th:text="${movie.rating}">rating</span>
+                </dd>
+                <dt>장르</dt>
+                <dd>
+                    <div th:each="genre: ${movie.genre}">
+                        <span class="genre" th:text="${genre}">genre</span>
+                    </div>
+                </dd>
+                <dt>감독</dt>
+                <dd>
+                    <div th:each="director: ${movie.director}">
+                        <span class="director" th:text="${director}">director</span>
+                    </div>
+                </dd>
+                <dt>주연</dt>
+                <dd>
+                    <div th:each="actor: ${movie.actor}">
+                        <span class="actor" th:text="${actor}">director</span>
+                    </div>
+                </dd>
+            </dl>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-10 col-sm-offset-1 panel panel-default">
+            <div class="panel-body" th:each="story: ${movie.story}">
+                <span th:text="${story}" />
+            </div>
+        </div>
+    </div>
+    <div class="row top-buff">
+        <div class="col-sm-2" th:each="photo: ${movie.photo}">
+            <img th:src="${photo}" style="width: 100%"/>
+        </div>
+    </div>
+</div>
+</body>
+</html>

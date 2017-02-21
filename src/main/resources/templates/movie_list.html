@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.springframework.org/schema/data/jaxb">
+<head>
+    <title>Movie World</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+</head>
+<body>
+<h1>Movie World</h1>
+<div th:fragment="list" th:if="${movieList != null}">
+    <div class="container-fluid">
+    <div id="order" th:with="queryUrl=${listedBy eq 'query' ? '/movie/search?query=' + (param.query != null ? param.query[0] : '') : '/bookmark'}">
+        <div th:if="${page != null}" class="pagination row">
+            <li th:class="${page == 1 ? 'disabled' : ''}"><a th:if="${page > 1}" th:href="@{${queryUrl}(order=title,page=${page-1},count=${count})}">Prev</a><span th:unless="${page > 1}">Prev</span></li>
+            <li th:class="${!nextable ? 'disabled' : ''}"><a th:if="${nextable}" th:href="@{${queryUrl}(order=title,page=${page+1},count=${count})}">Next</a><span th:unless="${nextable}">Next</span></li>
+        </div>
+        <div class="row bottom-buff">
+            <div class="col col-sm-3 col-sm-offset-9">
+                <a class="btn btn-default btn-sm" th:href = "@{${queryUrl}(order=title,page=${page},count=${count})}">제목순</a>
+                <a class="btn btn-default btn-sm" th:href = "@{${queryUrl}(order=year,page=${page},count=${count})}">연도순</a>
+                <a class="btn btn-default btn-sm" th:href = "@{${queryUrl}(order=rating,page=${page},count=${count})}">평점순</a>
+            </div>
+        </div>
+            <div th:each="movie: ${movieList}" class="row">
+                <h2><span class="col-sm-2" th:text="${movie.title} + ' (' + ${movie.year} + ')'">Title</span></h2>
+                <div class="col-sm-2">
+                    <img th:src="${movie.thumbnail}" style="width: 100%"/>
+                </div>
+                <div class="col-sm-1">
+                    <li th:each="genre: ${movie.genre}">
+                        <span class="genre" th:text="${genre}">Actor</span>
+                    </li>
+                </div>
+                <div class="col-sm-2">
+                    <li th:each="director: ${movie.director}">
+                        <span class="director" th:text="${director}">Actor</span>
+                    </li>
+                </div>
+                <div class="col-sm-2">
+                    <li th:each="actor: ${movie.actor}">
+                        <span class="actor" th:text="${actor}">Actor</span>
+                    </li>
+                </div>
+                <span class="col-sm-1" th:text="${movie.rating}">Rating</span>
+                <a th:href="@{'/movie'(id=${movie.id})}"><h2><span class="col-sm-1 glyphicon glyphicon-info-sign" /></h2></a>
+                <div class="col-sm-1">
+                    <form action="#" th:method="${!movie.bookmarked ? 'PUT' : 'DELETE'}" th:action="@{/bookmark}">
+                        <input type="hidden" name="movie_id" th:value="${movie.id}" />
+                        <input th:class="${movie.bookmarked ? 'btn btn-warning' : 'btn btn-secondary'}" type="submit" name="submit" th:value="${movie.bookmarked ? '★' : '☆'}" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

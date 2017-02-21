@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.springframework.org/schema/data/jaxb">
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" th:href="@{/static/css/style.css}" />
+</head>
+    <body>
+        <div th:fragment="search">
+            <form action="#" th:action="@{/movie/search}" method="GET">
+                <table class="table">
+                    <tr>
+                        <input type="hidden" name="page" value="1" />
+                        <input type="hidden" name="count" th:value="${param.count == 0 ? param.count : 5}" />
+
+                        <td colspan="2"><input class ="form-control" id="query" name="query" type="text" /></td>
+                        <td colspan="2"><input class="btn btn-primary" type="submit" value="검색"/></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </body>
+</html>
